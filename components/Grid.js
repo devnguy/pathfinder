@@ -12,7 +12,7 @@ const StyledGrid = styled.div`
 const Grid = ({ length, width }) => {
   const [graph, setGraph] = useState([])
   const size = length * width
-  // Initialize graph
+  // On mount, initialize graph. Adjacent edges are based on position of vertex.
   useEffect(() => {
     for (let i = 0; i < size; i++) {
       setGraph((graph) => [
@@ -26,49 +26,42 @@ const Grid = ({ length, width }) => {
             left: i % width !== 0 ? i - 1 : null,
           },
           visited: false,
+          isStart: false,
+          isEnd: false,
         },
       ])
     }
   }, [])
 
-  const toggleVisited = (index, option) => {
+  const setVertexProperty = (prop, index, bool) => {
     setGraph((graph) => [
       // before
       ...graph.slice(0, index),
-      // toggle visited property of index
+      // set visited property of index to bool
       {
         ...graph[index],
-        visited: option,
+        [prop]: bool,
       },
-      // after
+      // after, if there are remaining elements
       ...graph.slice(index + 1 < size ? index + 1 : graph.length),
     ])
   }
 
   const handleReset = () => {
     for (let i = 0; i < size; i++) {
-      toggleVisited(i, false)
+      setVertexProperty('visited', i, false)
+      if (graph[i].isStart) setVertexProperty('isStart', i, false)
+      if (graph[i].isEnd) setVertexProperty('isEnd', i, false)
     }
   }
 
-  const bfs = async (graph, start, end) => {
-    // [int]
-    const visited = []
-    // [{Cell}]
-    const toBeVisited = []
-
-    toBeVisited.push(graph[start])
-    while (toBeVisited.length > 0) {
+  const timedBfs = (visited, toBeVisited, end, delay) => {
+    setTimeout(() => {
       const currentVertex = toBeVisited.shift()
       if (!visited.includes(currentVertex.id)) {
         visited.push(currentVertex.id)
-        setTimeout(() => {
-          toggleVisited(currentVertex.id, true)
-        }, 1000)
-        // set state of cell here, change color or something
-        if (currentVertex.id === end) {
-          return
-        }
+        setVertexProperty('visited', currentVertex.id, true)
+        if (currentVertex.id === end) return
 
         for (const direction in currentVertex.edges) {
           if (currentVertex.edges[direction] && !visited.includes(currentVertex.edges[direction])) {
@@ -76,7 +69,20 @@ const Grid = ({ length, width }) => {
           }
         }
       }
-    }
+      if (toBeVisited.length > 0) timedBfs(visited, toBeVisited, end, delay)
+    }, delay)
+  }
+
+  const bfs = (start, end) => {
+    // [int]
+    const visited = []
+    // [{Cell}]
+    const toBeVisited = []
+    setVertexProperty('isStart', start, true)
+    setVertexProperty('isEnd', end, true)
+
+    toBeVisited.push(graph[start])
+    timedBfs(visited, toBeVisited, end, 500)
   }
 
   return (
@@ -86,7 +92,7 @@ const Grid = ({ length, width }) => {
       })}
       <button
         onClick={() => {
-          bfs(graph, 0, 24)
+          bfs(0, 11)
         }}
       ></button>
       <button onClick={handleReset}>Reset</button>
