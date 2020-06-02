@@ -31,7 +31,6 @@ const Grid = ({ length, width }) => {
     }
   }, [])
 
-  // testing cell rerender
   const toggleVisited = (index, option) => {
     setGraph((graph) => [
       // before
@@ -61,7 +60,6 @@ const Grid = ({ length, width }) => {
     toBeVisited.push(graph[start])
     while (toBeVisited.length > 0) {
       const currentVertex = toBeVisited.shift()
-      console.log(toBeVisited)
       if (!visited.includes(currentVertex.id)) {
         visited.push(currentVertex.id)
         setTimeout(() => {
