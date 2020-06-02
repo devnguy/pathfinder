@@ -32,18 +32,24 @@ const Grid = ({ length, width }) => {
   }, [])
 
   // testing cell rerender
-  const toggleVisited = (index) => {
+  const toggleVisited = (index, option) => {
     setGraph((graph) => [
       // before
       ...graph.slice(0, index),
       // toggle visited property of index
       {
         ...graph[index],
-        visited: !graph[index].visited,
+        visited: option,
       },
       // after
       ...graph.slice(index + 1 < size ? index + 1 : graph.length),
     ])
+  }
+
+  const handleReset = () => {
+    for (let i = 0; i < size; i++) {
+      toggleVisited(i, false)
+    }
   }
 
   const bfs = async (graph, start, end) => {
@@ -59,9 +65,12 @@ const Grid = ({ length, width }) => {
       if (!visited.includes(currentVertex.id)) {
         visited.push(currentVertex.id)
         setTimeout(() => {
-          toggleVisited(currentVertex.id)
+          toggleVisited(currentVertex.id, true)
         }, 1000)
         // set state of cell here, change color or something
+        if (currentVertex.id === end) {
+          return
+        }
 
         for (const direction in currentVertex.edges) {
           if (currentVertex.edges[direction] && !visited.includes(currentVertex.edges[direction])) {
@@ -82,6 +91,7 @@ const Grid = ({ length, width }) => {
           bfs(graph, 0, 24)
         }}
       ></button>
+      <button onClick={handleReset}>Reset</button>
     </StyledGrid>
   )
 }
