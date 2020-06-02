@@ -15,9 +15,9 @@ const Grid = ({ length, width }) => {
   // Initialize graph
   useEffect(() => {
     for (let i = 0; i < size; i++) {
-      setGraph([
+      setGraph((graph) => [
         ...graph,
-        graph.push({
+        {
           id: i,
           edges: {
             up: i - width >= 0 ? i - width : null,
@@ -26,14 +26,14 @@ const Grid = ({ length, width }) => {
             left: i % width !== 0 ? i - 1 : null,
           },
           visited: false,
-        }),
+        },
       ])
     }
   }, [])
 
   // testing cell rerender
   const toggleVisited = (index) => {
-    setGraph([
+    setGraph((graph) => [
       // before
       ...graph.slice(0, index),
       // toggle visited property of index
@@ -42,7 +42,7 @@ const Grid = ({ length, width }) => {
         visited: !graph[index].visited,
       },
       // after
-      ...graph.slice(index + 1),
+      ...graph.slice(index + 1 < size ? index + 1 : graph.length),
     ])
   }
 

@@ -1,6 +1,6 @@
 # Pathfinder
 
-A web app to visualize different pathfinding algorithms.
+A web app to visualize different pathfinding algorithms:
 BFS, DFS, Dijkstra's, A\*
 
 ```
