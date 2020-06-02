@@ -33,20 +33,28 @@ const Grid = ({ length, width }) => {
     }
   }, [])
 
+  /**
+   * Modifies the property of a graph vertex, updates state.
+   * @param {string} prop prop to modify; options are 'visited', 'isStart',
+   * and 'isEnd'
+   * @param {int} index index of vertex
+   * @param {bool} bool bool val to set prop to
+   */
   const setVertexProperty = (prop, index, bool) => {
     setGraph((graph) => [
-      // before
       ...graph.slice(0, index),
-      // set visited property of index to bool
       {
         ...graph[index],
         [prop]: bool,
       },
-      // after, if there are remaining elements
       ...graph.slice(index + 1 < size ? index + 1 : graph.length),
     ])
   }
 
+  /**
+   * Updates state and resets properties of graph vertices back to default
+   * false values
+   */
   const handleReset = () => {
     for (let i = 0; i < size; i++) {
       setVertexProperty('visited', i, false)
@@ -76,7 +84,7 @@ const Grid = ({ length, width }) => {
   const bfs = (start, end) => {
     // [int]
     const visited = []
-    // [{Cell}]
+    // [{cell}]
     const toBeVisited = []
     setVertexProperty('isStart', start, true)
     setVertexProperty('isEnd', end, true)
