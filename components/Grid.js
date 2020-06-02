@@ -63,6 +63,15 @@ const Grid = ({ length, width }) => {
     }
   }
 
+  /**
+   * Implementation of breadth first search. Calls itself so that a delay can
+   * be observed between loop iterations.
+   * @param {array[int]} visited visited vertices
+   * @param {array[object]} toBeVisited vertices that will be visited
+   * @param {int} end position of vertex which when found, will stop the
+   * algorithm
+   * @param {int} delay time in ms to delay between loop iterations
+   */
   const timedBfs = (visited, toBeVisited, end, delay) => {
     setTimeout(() => {
       const currentVertex = toBeVisited.shift()
@@ -81,6 +90,11 @@ const Grid = ({ length, width }) => {
     }, delay)
   }
 
+  /**
+   * Initializes breadth first search.
+   * @param {int} start index of vertex to start the search
+   * @param {int} end index of vertex to end the search
+   */
   const bfs = (start, end) => {
     // [int]
     const visited = []
