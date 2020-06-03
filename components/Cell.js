@@ -19,11 +19,13 @@ const Cell = (props) => {
   const [visited, setVisited] = useState(false)
   const [isStart, setIsStart] = useState(false)
   const [isEnd, setIsEnd] = useState(false)
+
   useEffect(() => {
     setVisited(props.cell.visited)
     setIsStart(props.cell.isStart)
     setIsEnd(props.cell.isEnd)
   }, [props.cell.visited, props.cell.isStart, props.cell.isEnd])
+
   return (
     <StyledCell visited={visited} isStart={isStart} isEnd={isEnd}>
       {props.cell.id}

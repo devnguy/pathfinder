@@ -1,11 +1,5 @@
-import Grid from '../components/Grid'
+import Interface from '../components/Interface'
 
-const Index = () => {
-  return (
-    <div>
-      <Grid length={5} width={5} />
-    </div>
-  )
-}
+const Index = () => <Interface />
 
 export default Index
