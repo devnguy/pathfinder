@@ -3,10 +3,10 @@ import useFormValidation from '../hooks/useFormValidation'
 const INITIAL_STATE = {
   start: '',
   end: '',
-  length: '',
-  width: '',
-  delay: '',
-  searchType: '',
+  length: 4,
+  width: 4,
+  delay: 250,
+  searchType: 'bfs',
   direction: '',
   nextDirection: '',
 }
@@ -23,54 +23,116 @@ const OptionsForm = () => {
     <div>
       <h2>Pathfinding Options</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          onChange={handleChange}
-          name="start"
-          value={values.start}
-          placeholder="Starting cell number"
-        />
-        <input
-          onChange={handleChange}
-          name="end"
-          value={values.end}
-          placeholder="Ending cell number"
-        />
-        <input
-          onChange={handleChange}
-          name="length"
-          value={values.length}
-          placeholder="Length of grid"
-        />
-        <input
-          onChange={handleChange}
-          name="width"
-          value={values.width}
-          placeholder="Width of grid"
-        />
-        <input
-          onChange={handleChange}
-          name="delay"
-          value={values.delay}
-          placeholder="Delay between steps (ms)"
-        />
-        <input
-          onChange={handleChange}
-          name="searchType"
-          value={values.searchType}
-          placeholder="Type of search (BFS/DFS)"
-        />
-        <input
-          onChange={handleChange}
-          name="direction"
-          value={values.direction}
-          placeholder="Initial direction to search"
-        />
-        <input
-          onChange={handleChange}
-          name="nextDirection"
-          value={values.nextDirection}
-          placeholder="Next direction to search (CW/CCW)"
-        />
+        <div>
+          <input
+            type="number"
+            onChange={handleChange}
+            name="start"
+            value={
+              values.start >= values.length * values.width
+                ? values.length * values.width - 1
+                : values.start < 0
+                ? 0
+                : values.start
+            }
+            placeholder="Starting cell number"
+            required
+          />
+          <input
+            onChange={handleChange}
+            name="end"
+            value={
+              values.end >= values.length * values.width
+                ? values.length * values.width - 1
+                : values.end < 0
+                ? 0
+                : values.end
+            }
+            placeholder="Ending cell number"
+          />
+        </div>
+        <div>
+          Length
+          <input
+            type="range"
+            onChange={handleChange}
+            name="length"
+            min={1}
+            max={16}
+            value={values.length}
+          />
+          <input
+            onChange={handleChange}
+            name="length"
+            value={values.length > 16 ? 16 : values.length < 1 ? 1 : values.length}
+          />
+        </div>
+        <div>
+          Width
+          <input
+            type="range"
+            onChange={handleChange}
+            name="width"
+            min={1}
+            max={16}
+            value={values.width}
+          />
+          <input
+            onChange={handleChange}
+            name="width"
+            value={values.width > 16 ? 16 : values.width < 1 ? 1 : values.width}
+          />
+        </div>
+        <div>
+          Delay (ms)
+          <input
+            type="range"
+            onChange={handleChange}
+            name="delay"
+            min={0}
+            max={1000}
+            step={50}
+            value={values.delay}
+          />
+          <input
+            type="number"
+            onChange={handleChange}
+            name="delay"
+            value={values.delay > 1000 ? 1000 : values.delay < 0 ? 0 : values.delay}
+          />
+        </div>
+        <div>
+          <input
+            onChange={handleChange}
+            type="radio"
+            name="searchType"
+            value="bfs"
+            checked={values.searchType === 'bfs'}
+          />
+          bfs
+          <input
+            onChange={handleChange}
+            type="radio"
+            name="searchType"
+            value="dfs"
+            checked={values.searchType === 'dfs'}
+          />
+          dfs
+        </div>
+        <div>
+          <select name="direction" onChange={handleChange}>
+            <option value="">--Starting direction--</option>
+            <option value="up">Up</option>
+            <option value="right">Right</option>
+            <option value="down">Down</option>
+            <option value="left">Left</option>
+          </select>
+          <select name="nextDirection" onChange={handleChange}>
+            <option value="">--Next direction--</option>
+            <option value="cw">Clockwise</option>
+            <option value="ccw">Counter Clockwise</option>
+          </select>
+        </div>
         <div>
           <button type="submit">Run</button>
         </div>
