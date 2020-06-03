@@ -74,7 +74,8 @@ const Grid = ({ length, width }) => {
    */
   const timedBfs = (visited, toBeVisited, end, delay) => {
     setTimeout(() => {
-      const currentVertex = toBeVisited.shift()
+      const currentVertex = toBeVisited.shift() // bfs, remove first in
+      // const currentVertex = toBeVisited.pop() // dfs, remove last in
       if (!visited.includes(currentVertex.id)) {
         visited.push(currentVertex.id)
         setVertexProperty('visited', currentVertex.id, true)
@@ -104,7 +105,7 @@ const Grid = ({ length, width }) => {
     setVertexProperty('isEnd', end, true)
 
     toBeVisited.push(graph[start])
-    timedBfs(visited, toBeVisited, end, 500)
+    timedBfs(visited, toBeVisited, end, 250)
   }
 
   return (
@@ -114,7 +115,7 @@ const Grid = ({ length, width }) => {
       })}
       <button
         onClick={() => {
-          bfs(0, 11)
+          bfs(0, 23)
         }}
       ></button>
       <button onClick={handleReset}>Reset</button>
