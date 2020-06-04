@@ -1,5 +1,5 @@
-import Interface from '../components/Interface'
+import App from '../components/App'
 
-const Index = () => <Interface />
+const Index = () => <App />
 
 export default Index

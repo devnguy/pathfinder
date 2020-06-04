@@ -1,18 +1,8 @@
-import useFormValidation from '../hooks/useFormValidation'
-
-const INITIAL_STATE = {
-  start: '',
-  end: '',
-  length: 4,
-  width: 4,
-  delay: 250,
-  searchType: 'bfs',
-  direction: '',
-  nextDirection: '',
-}
+import { useContext } from 'react'
+import GridContext from '../context/GridContext'
 
 const OptionsForm = () => {
-  const { handleChange, values } = useFormValidation(INITIAL_STATE)
+  const { handleChange, values } = useContext(GridContext)
 
   const handleSubmit = (event) => {
     event.preventDefault()
