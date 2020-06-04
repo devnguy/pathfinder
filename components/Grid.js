@@ -85,16 +85,53 @@ const Grid = () => {
 
           for (const direction in currentVertex.edges) {
             if (
-              currentVertex.edges[direction] &&
+              values.searchType === 'bfs' &&
+              currentVertex.edges[direction] !== null &&
               !visited.includes(currentVertex.edges[direction]) &&
               !toBeVisited.includes(graph[currentVertex.edges[direction]])
             ) {
               // FIXME: push elements in order based on input
               toBeVisited.push(graph[currentVertex.edges[direction]])
+            } else if (
+              values.searchType === 'dfs' &&
+              currentVertex.edges[direction] !== null &&
+              !visited.includes(currentVertex.edges[direction])
+            ) {
+              toBeVisited.push(graph[currentVertex.edges[direction]])
             }
           }
         }
         if (toBeVisited.length > 0) timedBfs(visited, toBeVisited)
+      }, parseInt(values.delay))
+    }
+
+    // Initalize search by pushing start vertex and run
+    const visited = [] // [int]
+    const toBeVisited = [] // [Object]
+
+    toBeVisited.push(graph[parseInt(values.start)])
+    timedBfs(visited, toBeVisited)
+  }
+
+  const dfs = () => {
+    const timedDfs = (visited, toBeVisited) => {
+      setTimeout(() => {
+        const currentVertex = toBeVisited.pop()
+        if (!visited.includes(currentVertex.id)) {
+          visited.push(currentVertex.id)
+          setVertexProperty('visited', currentVertex.id, true)
+          if (currentVertex.id === parseInt(values.end)) return
+
+          for (const direction in currentVertex.edges) {
+            if (
+              currentVertex.edges[direction] !== null &&
+              !visited.includes(currentVertex.edges[direction])
+            ) {
+              toBeVisited.push(graph[currentVertex.edges[direction]])
+            }
+          }
+        }
+        if (toBeVisited.length > 0) timedDfs(visited, toBeVisited)
       }, parseInt(values.delay))
     }
 

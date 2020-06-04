@@ -26,7 +26,7 @@ const Cell = (props) => {
     setVisited(props.cell.visited)
     setIsStart(props.cell.isStart)
     setIsEnd(props.cell.isEnd)
-  }, [props.cell.visited, props.cell.isStart, props.cell.isEnd])
+  }, [props.cell])
 
   const log = (event) => {
     console.log(props.cell)
