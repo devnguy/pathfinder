@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   end: 15,
   length: 4,
   width: 4,
-  delay: 250,
+  delay: 100,
   searchType: 'bfs',
   direction: '',
   nextDirection: '',
@@ -20,7 +20,7 @@ const App = () => {
     <div>
       <GridContext.Provider value={{ handleChange, values }}>
         <OptionsForm />
-        <Grid length={parseInt(values.length)} width={parseInt(values.width)} />
+        <Grid />
       </GridContext.Provider>
     </div>
   )

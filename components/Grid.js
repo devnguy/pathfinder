@@ -64,53 +64,46 @@ const Grid = () => {
   const handleReset = () => {
     for (let i = 0; i < size; i++) {
       setVertexProperty('visited', i, false)
-      // if (graph[i].isStart) setVertexProperty('isStart', i, false)
-      // if (graph[i].isEnd) setVertexProperty('isEnd', i, false)
     }
   }
 
   /**
-   * Implementation of breadth first search. Calls itself so that a delay can
-   * be observed between loop iterations.
-   * @param {array[int]} visited visited vertices
-   * @param {array[object]} toBeVisited vertices that will be visited
-   * @param {int} end position of vertex which when found, will stop the
-   * algorithm
-   * @param {int} delay time in ms to delay between loop iterations
-   */
-  const timedBfs = (visited, toBeVisited, end, delay) => {
-    setTimeout(() => {
-      const currentVertex = values.searchType === 'bfs' ? toBeVisited.shift() : toBeVisited.pop()
-      if (!visited.includes(currentVertex.id)) {
-        visited.push(currentVertex.id)
-        setVertexProperty('visited', currentVertex.id, true)
-        if (currentVertex.id === end) return
-
-        for (const direction in currentVertex.edges) {
-          if (currentVertex.edges[direction] && !visited.includes(currentVertex.edges[direction])) {
-            toBeVisited.push(graph[currentVertex.edges[direction]])
-          }
-        }
-      }
-      if (toBeVisited.length > 0) timedBfs(visited, toBeVisited, end, delay)
-    }, delay)
-  }
-
-  /**
-   * Initializes breadth first search.
+   * Implementation of breadth first search. Calls timedBfs so that a delay
+   * can be observed between loop iterations.
    * @param {int} start index of vertex to start the search
    * @param {int} end index of vertex to end the search
    */
-  const bfs = (start, end) => {
-    // [int]
-    const visited = []
-    // [{cell}]
-    const toBeVisited = []
-    setVertexProperty('isStart', start, true)
-    setVertexProperty('isEnd', end, true)
+  const bfs = () => {
+    // Define timedBfs so it can be ran below
+    const timedBfs = (visited, toBeVisited) => {
+      setTimeout(() => {
+        const currentVertex = values.searchType === 'bfs' ? toBeVisited.shift() : toBeVisited.pop()
+        if (!visited.includes(currentVertex.id)) {
+          visited.push(currentVertex.id)
+          setVertexProperty('visited', currentVertex.id, true)
+          if (currentVertex.id === parseInt(values.end)) return
 
-    toBeVisited.push(graph[start])
-    timedBfs(visited, toBeVisited, end, values.delay)
+          for (const direction in currentVertex.edges) {
+            if (
+              currentVertex.edges[direction] &&
+              !visited.includes(currentVertex.edges[direction]) &&
+              !toBeVisited.includes(graph[currentVertex.edges[direction]])
+            ) {
+              // FIXME: push elements in order based on input
+              toBeVisited.push(graph[currentVertex.edges[direction]])
+            }
+          }
+        }
+        if (toBeVisited.length > 0) timedBfs(visited, toBeVisited)
+      }, parseInt(values.delay))
+    }
+
+    // Initalize search by pushing start vertex and run
+    const visited = [] // [int]
+    const toBeVisited = [] // [Object]
+
+    toBeVisited.push(graph[parseInt(values.start)])
+    timedBfs(visited, toBeVisited)
   }
 
   return (
@@ -118,11 +111,7 @@ const Grid = () => {
       {graph.map((cell, index) => {
         return <Cell key={index} cell={cell} />
       })}
-      <button
-        onClick={() => {
-          bfs(parseInt(values.start), parseInt(values.end))
-        }}
-      ></button>
+      <button onClick={bfs}></button>
       <button onClick={handleReset}>Reset</button>
     </StyledGrid>
   )
