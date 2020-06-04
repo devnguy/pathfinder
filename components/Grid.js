@@ -1,19 +1,25 @@
 import styled from 'styled-components'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 
 import Cell from './Cell'
+import GridContext from '../context/GridContext'
 
 const StyledGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(${(props) => props.width}, 48px);
-  grid-template-rows: repeat(${(props) => props.width}, 48px);
+  grid-template-rows: repeat(${(props) => props.length}, 48px);
 `
 
-const Grid = ({ length, width }) => {
+const Grid = () => {
+  const { values } = useContext(GridContext)
   const [graph, setGraph] = useState([])
+  const length = parseInt(values.length)
+  const width = parseInt(values.width)
   const size = length * width
   // On mount, initialize graph. Adjacent edges are based on position of vertex.
+  // Update graph when length/width changes
   useEffect(() => {
+    setGraph([])
     for (let i = 0; i < size; i++) {
       setGraph((graph) => [
         ...graph,
@@ -26,12 +32,12 @@ const Grid = ({ length, width }) => {
             left: i % width !== 0 ? i - 1 : null,
           },
           visited: false,
-          isStart: false,
-          isEnd: false,
+          isStart: i === parseInt(values.start) ? true : false,
+          isEnd: i === parseInt(values.end) ? true : false,
         },
       ])
     }
-  }, [])
+  }, [values])
 
   /**
    * Modifies the property of a graph vertex, updates state.
@@ -58,8 +64,8 @@ const Grid = ({ length, width }) => {
   const handleReset = () => {
     for (let i = 0; i < size; i++) {
       setVertexProperty('visited', i, false)
-      if (graph[i].isStart) setVertexProperty('isStart', i, false)
-      if (graph[i].isEnd) setVertexProperty('isEnd', i, false)
+      // if (graph[i].isStart) setVertexProperty('isStart', i, false)
+      // if (graph[i].isEnd) setVertexProperty('isEnd', i, false)
     }
   }
 
@@ -74,8 +80,7 @@ const Grid = ({ length, width }) => {
    */
   const timedBfs = (visited, toBeVisited, end, delay) => {
     setTimeout(() => {
-      const currentVertex = toBeVisited.shift() // bfs, remove first in
-      // const currentVertex = toBeVisited.pop() // dfs, remove last in
+      const currentVertex = values.searchType === 'bfs' ? toBeVisited.shift() : toBeVisited.pop()
       if (!visited.includes(currentVertex.id)) {
         visited.push(currentVertex.id)
         setVertexProperty('visited', currentVertex.id, true)
@@ -105,17 +110,17 @@ const Grid = ({ length, width }) => {
     setVertexProperty('isEnd', end, true)
 
     toBeVisited.push(graph[start])
-    timedBfs(visited, toBeVisited, end, 250)
+    timedBfs(visited, toBeVisited, end, values.delay)
   }
 
   return (
-    <StyledGrid length={length} width={width}>
+    <StyledGrid length={values.length} width={values.width}>
       {graph.map((cell, index) => {
         return <Cell key={index} cell={cell} />
       })}
       <button
         onClick={() => {
-          bfs(0, 23)
+          bfs(parseInt(values.start), parseInt(values.end))
         }}
       ></button>
       <button onClick={handleReset}>Reset</button>

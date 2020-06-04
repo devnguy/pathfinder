@@ -4,8 +4,8 @@ import GridContext from '../context/GridContext'
 import useFormValidation from '../hooks/useFormValidation'
 
 const INITIAL_STATE = {
-  start: '',
-  end: '',
+  start: 0,
+  end: 15,
   length: 4,
   width: 4,
   delay: 250,

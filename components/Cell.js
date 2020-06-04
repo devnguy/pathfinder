@@ -10,6 +10,8 @@ const StyledCell = styled.div`
       ? 'yellow'
       : props.visited && props.isEnd
       ? 'green'
+      : props.isStart || props.isEnd
+      ? 'blue'
       : props.visited
       ? 'red'
       : 'none'};
@@ -26,8 +28,12 @@ const Cell = (props) => {
     setIsEnd(props.cell.isEnd)
   }, [props.cell.visited, props.cell.isStart, props.cell.isEnd])
 
+  const log = (event) => {
+    console.log(props.cell)
+  }
+
   return (
-    <StyledCell visited={visited} isStart={isStart} isEnd={isEnd}>
+    <StyledCell visited={visited} isStart={isStart} isEnd={isEnd} onClick={log}>
       {props.cell.id}
     </StyledCell>
   )
