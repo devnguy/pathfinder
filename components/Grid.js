@@ -5,8 +5,8 @@ import Cell from './Cell'
 
 const StyledGrid = styled.div`
   display: grid;
-  grid-template-columns: 48px 48px 48px 48px 48px;
-  grid-template-rows: 48px 48px 48px 48px 48px;
+  grid-template-columns: repeat(${(props) => props.width}, 48px);
+  grid-template-rows: repeat(${(props) => props.width}, 48px);
 `
 
 const Grid = ({ length, width }) => {
@@ -109,7 +109,7 @@ const Grid = ({ length, width }) => {
   }
 
   return (
-    <StyledGrid>
+    <StyledGrid length={length} width={width}>
       {graph.map((cell, index) => {
         return <Cell key={index} cell={cell} />
       })}
