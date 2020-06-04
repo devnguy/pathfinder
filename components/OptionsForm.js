@@ -123,9 +123,9 @@ const OptionsForm = () => {
             <option value="ccw">Counter Clockwise</option>
           </select>
         </div>
-        <div>
+        {/* <div>
           <button type="submit">Run</button>
-        </div>
+        </div> */}
       </form>
     </div>
   )
