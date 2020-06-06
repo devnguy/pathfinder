@@ -10,6 +10,8 @@ import ButtonInterface from './ButtonInterface'
 const App = () => {
   const { handleChange, values } = useFormValidation(INITIAL_STATE)
   const [graph, setGraph] = useState([])
+  const [walls, setWalls] = useState([])
+  const [isEditingWalls, setIsEditingWalls] = useState(false)
   const length = parseInt(values.length)
   const width = parseInt(values.width)
   const size = length * width
@@ -24,18 +26,39 @@ const App = () => {
         {
           id: i,
           edges: {
-            up: i - width >= 0 ? i - width : null,
-            right: i % width !== width - 1 ? i + 1 : null,
-            down: i + width < size ? i + width : null,
-            left: i % width !== 0 ? i - 1 : null,
+            up: assignEdge(i, 'up'),
+            right: assignEdge(i, 'right'),
+            down: assignEdge(i, 'down'),
+            left: assignEdge(i, 'left'),
           },
           visited: false,
           isStart: i === parseInt(values.start) ? true : false,
           isEnd: i === parseInt(values.end) ? true : false,
+          isWall: walls.includes(i) ? true : false,
         },
       ])
     }
-  }, [values])
+  }, [values, walls])
+
+  // An edge is valid if it is within range and it's not a wall.
+  const assignEdge = (i, direction) => {
+    switch (direction) {
+      case 'up':
+        return i - width >= 0 && !walls.includes(i - width) ? i - width : null
+      case 'right':
+        return i % width !== width - 1 && !walls.includes(i + 1) ? i + 1 : null
+      case 'down':
+        return i + width < size && !walls.includes(i + width) ? i + width : null
+      case 'left':
+        return i % width !== 0 && !walls.includes(i - 1) ? i - 1 : null
+      default:
+        return null
+    }
+  }
+
+  useEffect(() => {
+    console.log(walls)
+  }, [walls])
 
   /**
    * Modifies the property of a graph vertex, updates state.
@@ -65,9 +88,25 @@ const App = () => {
     })
   }
 
+  const disableIsEditingWalls = () => {
+    setIsEditingWalls(false)
+  }
+
   return (
-    <div>
-      <GridContext.Provider value={{ handleChange, values, graph, setVertexProperty, handleReset }}>
+    <div onMouseUp={disableIsEditingWalls}>
+      <GridContext.Provider
+        value={{
+          handleChange,
+          values,
+          graph,
+          setVertexProperty,
+          handleReset,
+          walls,
+          setWalls,
+          isEditingWalls,
+          setIsEditingWalls,
+        }}
+      >
         <OptionsForm />
         <ButtonInterface />
         <Grid />

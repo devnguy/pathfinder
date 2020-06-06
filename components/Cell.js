@@ -1,12 +1,16 @@
 import styled from 'styled-components'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+
+import GridContext from '../context/GridContext'
 
 const StyledCell = styled.div`
   width: 48px;
   height: 48px;
   border: 1px solid black;
   background: ${(props) =>
-    props.visited && props.isStart
+    props.isWall
+      ? '#444'
+      : props.visited && props.isStart
       ? 'yellow'
       : props.visited && props.isEnd
       ? 'green'
@@ -18,30 +22,45 @@ const StyledCell = styled.div`
 `
 
 const Cell = (props) => {
+  const { walls, setWalls, isEditingWalls, setIsEditingWalls } = useContext(GridContext)
   const [visited, setVisited] = useState(false)
   const [isStart, setIsStart] = useState(false)
   const [isEnd, setIsEnd] = useState(false)
+  const [isWall, setIsWall] = useState(false)
 
   useEffect(() => {
     setVisited(props.cell.visited)
     setIsStart(props.cell.isStart)
     setIsEnd(props.cell.isEnd)
+    setIsWall(props.cell.isWall)
   }, [props.cell])
 
-  const log = (event) => {
-    // console.log(props.cell.edges)
-    // for (const direction of props.cell.edges) {
-    //   console.log(direction)
-    // }
-    console.log(Object.keys(props.cell.edges))
-    for (const key in props.cell.edges) {
-      console.log(key)
+  const toggleWall = (event) => {
+    // console.log(props.cell.isWall)
+    if (isEditingWalls) {
+      if (walls.includes(props.cell.id)) {
+        setWalls(walls.filter((wall) => wall !== props.cell.id))
+      } else {
+        setWalls([...walls, props.cell.id])
+      }
     }
   }
 
+  const enableIsEditingWalls = () => {
+    setIsEditingWalls(true)
+    toggleWall()
+  }
+
   return (
-    <StyledCell visited={visited} isStart={isStart} isEnd={isEnd} onClick={log}>
-      {props.cell.id}
+    <StyledCell
+      isWall={isWall}
+      visited={visited}
+      isStart={isStart}
+      isEnd={isEnd}
+      onMouseOver={toggleWall}
+      onMouseDown={enableIsEditingWalls}
+    >
+      {/* {props.cell.id} */}
     </StyledCell>
   )
 }
