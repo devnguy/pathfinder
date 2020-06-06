@@ -48,13 +48,13 @@ const OptionsForm = () => {
             onChange={handleChange}
             name="length"
             min={1}
-            max={16}
+            max={20}
             value={values.length}
           />
           <input
             onChange={handleChange}
             name="length"
-            value={values.length > 16 ? 16 : values.length < 1 ? 1 : values.length}
+            value={values.length > 20 ? 20 : values.length < 1 ? 1 : values.length}
           />
         </div>
         <div>
@@ -64,13 +64,13 @@ const OptionsForm = () => {
             onChange={handleChange}
             name="width"
             min={1}
-            max={16}
+            max={20}
             value={values.width}
           />
           <input
             onChange={handleChange}
             name="width"
-            value={values.width > 16 ? 16 : values.width < 1 ? 1 : values.width}
+            value={values.width > 20 ? 20 : values.width < 1 ? 1 : values.width}
           />
         </div>
         <div>

@@ -4,8 +4,8 @@ import { useState, useEffect, useContext } from 'react'
 import GridContext from '../context/GridContext'
 
 const StyledCell = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   border: 1px solid black;
   background: ${(props) =>
     props.isWall
