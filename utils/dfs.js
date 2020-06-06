@@ -1,31 +1,47 @@
-const dfs = (graph, values, setVertexProperty) => {
-  const timedDfs = (visited, toBeVisited) => {
-    setTimeout(() => {
-      const currentVertex = toBeVisited.pop()
-      if (!visited.includes(currentVertex.id)) {
-        visited.push(currentVertex.id)
-        setVertexProperty('visited', currentVertex.id, true)
-        if (currentVertex.id === parseInt(values.end)) return
+import Bfs from './Bfs'
 
-        for (const direction in currentVertex.edges) {
-          if (
-            currentVertex.edges[direction] !== null &&
-            !visited.includes(currentVertex.edges[direction])
-          ) {
-            toBeVisited.push(graph[currentVertex.edges[direction]])
-          }
-        }
-      }
-      if (toBeVisited.length > 0) timedDfs(visited, toBeVisited)
-    }, parseInt(values.delay))
+class Dfs extends Bfs {
+  constructor(graph, values, setVertexProperty) {
+    super(graph, values, setVertexProperty)
   }
 
-  // Initalize search by pushing start vertex and run
-  const visited = [] // [int]
-  const toBeVisited = [] // [Object]
+  timedExplore() {
+    setTimeout(() => {
+      // pop instead of shift
+      const currentVertex = this.toBeVisited.pop()
+      if (!this.visited.includes(currentVertex.id)) {
+        this.visited.push(currentVertex.id)
+        this.setVertexProperty('visited', currentVertex.id, true)
+        if (currentVertex.id === parseInt(this.values.end)) return
 
-  toBeVisited.push(graph[parseInt(values.start)])
-  timedDfs(visited, toBeVisited)
+        this.pushVerticesInOrder(currentVertex)
+      }
+      if (this.toBeVisited.length > 0) this.timedExplore()
+    }, parseInt(this.values.delay))
+  }
+
+  pushVerticesInOrder(currentVertex) {
+    const directions = Object.keys(currentVertex.edges)
+    const numOfEdges = directions.length
+    let count = 0
+    let i = directions.indexOf(this.values.direction)
+    // To add adjacent edges in backwards order, start at i - 1
+    i = i - 1 >= 0 ? i - 1 : numOfEdges - 1
+
+    while (count < numOfEdges) {
+      const adjacentEdge = currentVertex.edges[directions[i]]
+      if ((adjacentEdge || adjacentEdge === 0) && !this.visited.includes(adjacentEdge)) {
+        this.toBeVisited.push(this.graph[adjacentEdge])
+      }
+
+      if (this.values.nextDirection === 'ccw') {
+        i = i + 1 < numOfEdges ? i + 1 : 0
+      } else {
+        i = i - 1 >= 0 ? i - 1 : numOfEdges - 1
+      }
+      count++
+    }
+  }
 }
 
-export default dfs
+export default Dfs

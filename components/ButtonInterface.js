@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 
 import Bfs from '../utils/Bfs'
-import dfs from '../utils/dfs'
+import Dfs from '../utils/Dfs'
 import GridContext from '../context/GridContext'
 
 const ButtonInterface = ({ setVertexProperty, handleReset }) => {
@@ -17,7 +17,8 @@ const ButtonInterface = ({ setVertexProperty, handleReset }) => {
                 bfs.run()
               }
             : () => {
-                dfs(graph, values, setVertexProperty)
+                const dfs = new Dfs(graph, values, setVertexProperty)
+                dfs.run()
               }
         }
       >

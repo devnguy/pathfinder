@@ -9,11 +9,12 @@ class Bfs {
 
   run() {
     this.toBeVisited.push(this.graph[parseInt(this.values.start)])
-    this.timedBfs()
+    this.timedExplore()
   }
 
-  timedBfs() {
+  timedExplore() {
     setTimeout(() => {
+      // shift instead of pop
       const currentVertex = this.toBeVisited.shift()
       if (!this.visited.includes(currentVertex.id)) {
         this.visited.push(currentVertex.id)
@@ -22,9 +23,7 @@ class Bfs {
 
         this.pushVerticesInOrder(currentVertex)
       }
-      if (this.toBeVisited.length > 0) {
-        this.timedBfs()
-      }
+      if (this.toBeVisited.length > 0) this.timedExplore()
     }, parseInt(this.values.delay))
   }
 
