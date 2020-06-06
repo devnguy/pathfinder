@@ -4,8 +4,8 @@ import { useState, useEffect, useContext } from 'react'
 import GridContext from '../context/GridContext'
 
 const StyledCell = styled.div`
-  width: 48px;
-  height: 48px;
+  width: 24px;
+  height: 24px;
   border: 1px solid black;
   background: ${(props) =>
     props.isWall
@@ -46,6 +46,10 @@ const Cell = (props) => {
     }
   }
 
+  const toggleIsEditingWalls = () => {
+    setIsEditingWalls(!isEditingWalls)
+  }
+
   const enableIsEditingWalls = () => {
     setIsEditingWalls(true)
     toggleWall()
@@ -58,7 +62,7 @@ const Cell = (props) => {
       isStart={isStart}
       isEnd={isEnd}
       onMouseOver={toggleWall}
-      onMouseDown={enableIsEditingWalls}
+      onClick={toggleIsEditingWalls}
     >
       {/* {props.cell.id} */}
     </StyledCell>

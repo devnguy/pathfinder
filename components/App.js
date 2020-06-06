@@ -56,10 +56,6 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
-    console.log(walls)
-  }, [walls])
-
   /**
    * Modifies the property of a graph vertex, updates state.
    * @param {string} prop: prop to modify; options are 'visited', 'isStart',
@@ -82,29 +78,30 @@ const App = () => {
    * Updates state and resets properties of graph vertices back to default
    * false values.
    */
-  const handleReset = () => {
+  const handleResetPath = () => {
     graph.forEach((vertex, i) => {
       setVertexProperty('visited', i, false)
     })
   }
 
-  const disableIsEditingWalls = () => {
-    setIsEditingWalls(false)
+  const handleResetWalls = () => {
+    setWalls([])
   }
 
   return (
-    <div onMouseUp={disableIsEditingWalls}>
+    <div>
       <GridContext.Provider
         value={{
           handleChange,
           values,
           graph,
           setVertexProperty,
-          handleReset,
+          handleResetPath,
           walls,
           setWalls,
           isEditingWalls,
           setIsEditingWalls,
+          handleResetWalls,
         }}
       >
         <OptionsForm />

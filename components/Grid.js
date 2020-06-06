@@ -6,8 +6,8 @@ import GridContext from '../context/GridContext'
 
 const StyledGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(${(props) => props.width}, 48px);
-  grid-template-rows: repeat(${(props) => props.length}, 48px);
+  grid-template-columns: repeat(${(props) => props.width}, 24px);
+  grid-template-rows: repeat(${(props) => props.length}, 24px);
 `
 
 const Grid = () => {

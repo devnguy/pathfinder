@@ -5,7 +5,9 @@ import Dfs from '../utils/Dfs'
 import GridContext from '../context/GridContext'
 
 const ButtonInterface = () => {
-  const { values, graph, setVertexProperty, handleReset } = useContext(GridContext)
+  const { values, graph, setVertexProperty, handleResetPath, handleResetWalls } = useContext(
+    GridContext
+  )
 
   return (
     <div>
@@ -24,7 +26,8 @@ const ButtonInterface = () => {
       >
         Run
       </button>
-      <button onClick={handleReset}>Reset</button>
+      <button onClick={handleResetPath}>Reset</button>
+      <button onClick={handleResetWalls}>Reset walls</button>
     </div>
   )
 }
