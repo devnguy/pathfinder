@@ -4,8 +4,8 @@ import Bfs from '../utils/Bfs'
 import Dfs from '../utils/Dfs'
 import GridContext from '../context/GridContext'
 
-const ButtonInterface = ({ setVertexProperty, handleReset }) => {
-  const { values, graph } = useContext(GridContext)
+const ButtonInterface = () => {
+  const { values, graph, setVertexProperty, handleReset } = useContext(GridContext)
 
   return (
     <div>

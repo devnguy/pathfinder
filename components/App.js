@@ -15,7 +15,7 @@ const App = () => {
   const size = length * width
 
   // On mount, initialize graph. Adjacent edges are based on position of vertex.
-  // Update graph when length/width changes.
+  // Update graph when input changes.
   useEffect(() => {
     setGraph([])
     for (let i = 0; i < size; i++) {
@@ -67,9 +67,9 @@ const App = () => {
 
   return (
     <div>
-      <GridContext.Provider value={{ handleChange, values, graph }}>
+      <GridContext.Provider value={{ handleChange, values, graph, setVertexProperty, handleReset }}>
         <OptionsForm />
-        <ButtonInterface setVertexProperty={setVertexProperty} handleReset={handleReset} />
+        <ButtonInterface />
         <Grid />
       </GridContext.Provider>
     </div>
