@@ -35,8 +35,7 @@ const Cell = (props) => {
     setIsWall(props.cell.isWall)
   }, [props.cell])
 
-  const toggleWall = (event) => {
-    // console.log(props.cell.isWall)
+  const toggleWall = () => {
     if (isEditingWalls) {
       if (walls.includes(props.cell.id)) {
         setWalls(walls.filter((wall) => wall !== props.cell.id))
@@ -48,11 +47,6 @@ const Cell = (props) => {
 
   const toggleIsEditingWalls = () => {
     setIsEditingWalls(!isEditingWalls)
-  }
-
-  const enableIsEditingWalls = () => {
-    setIsEditingWalls(true)
-    toggleWall()
   }
 
   return (

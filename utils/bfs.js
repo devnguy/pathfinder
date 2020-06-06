@@ -27,6 +27,19 @@ class Bfs {
     }, parseInt(this.values.delay))
   }
 
+  // explore() {
+  //   while (this.toBeVisited.length > 0) {
+  //     const currentVertex = this.toBeVisited.shift()
+  //     if (!this.visited.includes(currentVertex.id)) {
+  //       this.visited.push(currentVertex.id)
+  //       this.setVertexProperty('visited', currentVertex.id, true)
+  //       if (currentVertex.id === parseInt(this.values.end)) return
+
+  //       this.pushVerticesInOrder(currentVertex)
+  //     }
+  //   }
+  // }
+
   pushVerticesInOrder(currentVertex) {
     const directions = Object.keys(currentVertex.edges)
     const numOfEdges = directions.length
