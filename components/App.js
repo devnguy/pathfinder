@@ -13,6 +13,7 @@ const App = () => {
   const length = parseInt(values.length)
   const width = parseInt(values.width)
   const size = length * width
+
   // On mount, initialize graph. Adjacent edges are based on position of vertex.
   // Update graph when length/width changes.
   useEffect(() => {
