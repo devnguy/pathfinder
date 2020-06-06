@@ -59,9 +59,9 @@ const App = () => {
    * false values.
    */
   const handleReset = () => {
-    for (let i = 0; i < size; i++) {
+    graph.forEach((vertex, i) => {
       setVertexProperty('visited', i, false)
-    }
+    })
   }
 
   return (
