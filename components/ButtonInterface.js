@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import bfs from '../utils/bfs'
+import Bfs from '../utils/Bfs'
 import dfs from '../utils/dfs'
 import GridContext from '../context/GridContext'
 
@@ -13,7 +13,8 @@ const ButtonInterface = ({ setVertexProperty, handleReset }) => {
         onClick={
           values.searchType === 'bfs'
             ? () => {
-                bfs(graph, values, setVertexProperty)
+                const bfs = new Bfs(graph, values, setVertexProperty)
+                bfs.run()
               }
             : () => {
                 dfs(graph, values, setVertexProperty)

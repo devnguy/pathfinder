@@ -5,8 +5,8 @@ const INITIAL_STATE = {
   width: 4,
   delay: 100,
   searchType: 'bfs',
-  direction: '',
-  nextDirection: '',
+  direction: 'up',
+  nextDirection: 'cw',
 }
 
 export default INITIAL_STATE

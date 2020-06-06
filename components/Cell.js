@@ -29,7 +29,14 @@ const Cell = (props) => {
   }, [props.cell])
 
   const log = (event) => {
-    console.log(props.cell)
+    // console.log(props.cell.edges)
+    // for (const direction of props.cell.edges) {
+    //   console.log(direction)
+    // }
+    console.log(Object.keys(props.cell.edges))
+    for (const key in props.cell.edges) {
+      console.log(key)
+    }
   }
 
   return (
